@@ -1,6 +1,6 @@
 /* Contains naming violations of different types. Currently contains
 ** 8
-** violations.
+** violations, plus an invalid filename.
 */
 #define Pi 3.1416   /* violation */
 

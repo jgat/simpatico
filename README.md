@@ -76,6 +76,29 @@ The categories are roughly described below. More details are given in
 
 ## Usage
 
+* Shell:
+
+```bash
+$ ./simpatico.py file [file ...]
 ```
-./simpatico.py file1.c file2.c
+
+* API:
+
+```python
+import simpatico
+errors = simpatico.check('program.c')   # a list of violations
+e = errors[0]
+print e.format()
+print [e.filename, e.line, e.category, e.description]
+```
+
+```
+program.c:1: [OVERALL] goto
+['program.c', 1, 'OVERALL', 'goto']
+```
+
+* Testing:
+
+```bash
+$ python tests
 ```

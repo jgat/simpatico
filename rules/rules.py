@@ -1,11 +1,11 @@
 from base import RuleChecker
+import os.path
 
-__all__ = ['NamesChecker', 'BracesChecker', 'IndentationChecker',
-        'WhitespaceChecker', 'LineLengthChecker', 'OverallChecker']
+__all__ = ['get_rules']
 
 class NamesChecker(RuleChecker):
     """Checker for naming conventions."""
-    _CATEGORY = "Naming"
+    _CATEGORY = "NAMING"
 
     def _check_variable(self, name):
         # variable names are in camelCase
@@ -25,16 +25,22 @@ class NamesChecker(RuleChecker):
 
     def check(self, reader):
         # TODO: know what kind of identifier each identifier is.
+        basename = os.path.split(reader.filename)[1]
+        if (not basename[0].islower() or
+                '_' in basename or
+                not basename.endswith(('.c','.h'))):
+            self._error((reader.filename, 1), "Invalid filename: " + basename)
+
         while not reader.end():
             token = reader.next_tok()
             if token.type != 'identifier':
                 continue
             
             if not self._check_variable(token.value):
-                self._error(reader.file_line(), "Invalid variable " + token.value)
+                self._error(reader.file_line(), "Invalid variable: " + token.value)
 
 class BracesChecker(RuleChecker):
-    _CATEGORY = "Braces"
+    _CATEGORY = "BRACES"
 
     def check(self, reader):
         # TODO (braces checking):
@@ -52,7 +58,7 @@ class BracesChecker(RuleChecker):
         pass
 
 class IndentationChecker(RuleChecker):
-    _CATEGORY = "Indentation"
+    _CATEGORY = "INDENTATION"
     _INDENT = 4
 
     def check(self, reader):
@@ -80,7 +86,7 @@ class IndentationChecker(RuleChecker):
 
 class WhitespaceChecker(RuleChecker):
     """Checker for horizontal and vertical whitespace rules."""
-    _CATEGORY = "Whitespace"
+    _CATEGORY = "WHITESPACE"
 
     def check(self, reader):
         # TODO: (>= ?) 2 newlines needed after a function's }
@@ -109,7 +115,7 @@ class WhitespaceChecker(RuleChecker):
 
 class LineLengthChecker(RuleChecker):
     """Checker for line length rules."""
-    _CATEGORY = "Line Length"
+    _CATEGORY = "LINE-LENGTH"
 
     def check(self, reader):
         # Lines > 79 characters are in error.
@@ -120,7 +126,7 @@ class LineLengthChecker(RuleChecker):
                         "Line is {0} characters".format(len(line)))
 
 class OverallChecker(RuleChecker):
-    _CATEGORY = "Overall"
+    _CATEGORY = "OVERALL"
 
     def check(self, reader):
         # TODO function length (if strict)
@@ -129,3 +135,8 @@ class OverallChecker(RuleChecker):
             if token.type == 'goto':
                 self._error(reader.file_line(), 'goto')
 
+_CHECKERS = [NamesChecker, BracesChecker, IndentationChecker,
+        WhitespaceChecker, LineLengthChecker, OverallChecker]
+
+def get_rules():
+    return [c() for c in _CHECKERS]

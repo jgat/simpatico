@@ -14,6 +14,10 @@ class TokenReader(object):
         # internally index tokens and lines from 0
         self._pos = self._linenum = -1
 
+    @property
+    def filename(self):
+        return self._filename
+
     def reset(self):
         """Reset back to the start so that it can be used again."""
         self._pos = self._linenum = -1
@@ -44,7 +48,7 @@ class TokenReader(object):
 
     def file_line(self):
         """Return the filename and  line number of the current line"""
-        return self._filename, self._tokens[self._pos].linenum
+        return self.filename, self._tokens[self._pos].linenum
 
     def end(self):
         """Have we reached the end of the tokens?"""

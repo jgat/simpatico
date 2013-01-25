@@ -1,8 +1,13 @@
 from collections import namedtuple
 from abc import ABCMeta, abstractmethod
 
-Violation = namedtuple("Violation",
+ViolationBase = namedtuple("ViolationBase",
         ["filename", "line", "category", "description"])
+
+class Violation(ViolationBase):
+    _PRINT_FORMAT = "{0.filename}:{0.line}: [{0.category}] {0.description}"
+    def format(self):
+        return self._PRINT_FORMAT.format(self)
 
 class RuleChecker(object):
     """An abstract class for checking and reporting on rules."""
