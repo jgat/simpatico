@@ -3,6 +3,7 @@ import os.path
 
 __all__ = ['get_rules']
 
+
 class NamesChecker(RuleChecker):
     """Checker for naming conventions."""
     _CATEGORY = "NAMING"
@@ -28,16 +29,18 @@ class NamesChecker(RuleChecker):
         basename = os.path.split(reader.filename)[1]
         if (not basename[0].islower() or
                 '_' in basename or
-                not basename.endswith(('.c','.h'))):
+                not basename.endswith(('.c', '.h'))):
             self._error((reader.filename, 1), "Invalid filename: " + basename)
 
         while not reader.end():
             token = reader.next_tok()
             if token.type != 'identifier':
                 continue
-            
+
             if not self._check_variable(token.value):
-                self._error(reader.file_line(), "Invalid variable: " + token.value)
+                self._error(reader.file_line(),
+                            "Invalid variable: " + token.value)
+
 
 class BracesChecker(RuleChecker):
     _CATEGORY = "BRACES"
@@ -50,12 +53,12 @@ class BracesChecker(RuleChecker):
         # else / else if / do-while have stuff after the }
         # { ... } on the same line counts as one violation, not 2
         # mistakes in } else { and } else if { count as one violation, not 2
-        
         # keep track of:
-        # - whether we are in a control statement (to look for the { in the right spot)
+        # - whether we're in a control statement (look for { in the right spot)
         # - control structure, array, struct, etc nesting (as a stack)
         # - violations that shouldn't be double-counted
         pass
+
 
 class IndentationChecker(RuleChecker):
     _CATEGORY = "INDENTATION"
@@ -75,7 +78,7 @@ class IndentationChecker(RuleChecker):
 
         # Keep track of:
         # - control structure nesting (as a stack)
-        # - whether we are in a control statement (to look for the \n at the end)
+        # - whether we are in a control statement (to look for \n at the end)
         # - whether we are in a statement (so we can detect \n in a statement)
         # - whether we are in a multi-line statement (so we only count it once)
 
@@ -93,8 +96,9 @@ class WhitespaceChecker(RuleChecker):
         # space before and after = &= |= ^= += -= *= /= %= <<= >>=
         # space after , ;
         assignments = {"assign", "andassign", "orassign", "xorassign",
-                "plusassign", "minusassign", "starassign", "divideassign",
-                "percentassign", "shiftleftassign", "shiftrightassign"}
+                       "plusassign", "minusassign", "starassign",
+                       "divideassign", "percentassign", "shiftleftassign",
+                       "shiftrightassign"}
         commas = {"comma", "semicolon"}
         whitespace = {"space", "newline", "eof"}
 
@@ -104,7 +108,7 @@ class WhitespaceChecker(RuleChecker):
             message = ""
             if token.type in assignments:
                 correct = (reader.back(1).type in whitespace and
-                        reader.forward(1).type in whitespace)
+                           reader.forward(1).type in whitespace)
                 message = "No space around {0}".format(token.value)
             elif token.type in commas:
                 correct = reader.forward(1).type in whitespace
@@ -112,6 +116,7 @@ class WhitespaceChecker(RuleChecker):
 
             if not correct:
                 self._error(reader.file_line(), message)
+
 
 class LineLengthChecker(RuleChecker):
     """Checker for line length rules."""
@@ -123,7 +128,8 @@ class LineLengthChecker(RuleChecker):
             line = reader.next_line().rstrip('\n')
             if len(line) > 79:
                 self._error(reader.file_line(),
-                        "Line is {0} characters".format(len(line)))
+                            "Line is {0} characters".format(len(line)))
+
 
 class OverallChecker(RuleChecker):
     _CATEGORY = "OVERALL"
@@ -135,8 +141,10 @@ class OverallChecker(RuleChecker):
             if token.type == 'goto':
                 self._error(reader.file_line(), 'goto')
 
+
 _CHECKERS = [NamesChecker, BracesChecker, IndentationChecker,
-        WhitespaceChecker, LineLengthChecker, OverallChecker]
+             WhitespaceChecker, LineLengthChecker, OverallChecker]
+
 
 def get_rules():
     return [c() for c in _CHECKERS]

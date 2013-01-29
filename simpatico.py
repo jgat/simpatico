@@ -3,6 +3,7 @@
 from tokenizer import TokenReader as _TokenReader
 from rules import get_rules as _get_rules
 
+
 def check(filename):
     """Evaluate the style of a given file. Return a list of violations.
 

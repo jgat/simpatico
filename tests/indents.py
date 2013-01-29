@@ -1,6 +1,7 @@
 import unittest
 import simpatico
 
+
 class TestIndents(unittest.TestCase):
     EXPECTED = [(3, 'Indentation error (expected 0, got 4)'),
                 (7, 'Indentation error (expected 4, got 8)'),
@@ -12,6 +13,7 @@ class TestIndents(unittest.TestCase):
                 (30, 'Indentation error (expected 12, got 8)'),
                 (40, 'Indentation error (expected 12, got 8)'),
                 (44, 'Indentation error (expected 0, got 4)')]
+
     def runTest(self):
         lines = simpatico.get_lines('tests/files/indents.c')
         errors = simpatico.check_indents(lines)

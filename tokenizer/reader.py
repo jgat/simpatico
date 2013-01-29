@@ -2,6 +2,7 @@ import tokens
 
 __all__ = ['TokenReader']
 
+
 class TokenReader(object):
     """Keeps track of the tokens and lines in the file."""
     def __init__(self, filename):
@@ -31,7 +32,7 @@ class TokenReader(object):
         while (self._pos < self._len_tokens and
                 self._tokens[self._pos].linenum != self._linenum + 1):
             self._pos += 1
-        
+
         return line
 
     def next_tok(self):
@@ -41,7 +42,7 @@ class TokenReader(object):
 
         # Advance the line number if necessary
         if self._linenum < 0 or (self._pos < self._len_tokens and
-                self._tokens[self._pos].type == 'newline'):
+                                 self._tokens[self._pos].type == 'newline'):
             self._linenum += 1
 
         return tok
@@ -65,4 +66,3 @@ class TokenReader(object):
     def forward(self, n):
         """Look at the n-th following token. Watch out for IndexErrors."""
         return self._tokens[self._pos + n]
-

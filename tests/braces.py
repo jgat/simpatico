@@ -1,6 +1,7 @@
 import unittest
 import simpatico
 
+
 class TestBraces(unittest.TestCase):
     def test_good(self):
         lines = simpatico.get_lines('tests/files/good_braces.c')
