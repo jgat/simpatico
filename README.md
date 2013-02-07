@@ -39,43 +39,77 @@ the process. Very frequently the tutors make mistakes.
 Each style error must be declared in the format:
     filename:lineNumber: [CATEGORY] Description
 
-The categories are roughly described below. More details are given in
+The categories and potential error messages are listed below. More details are given in
 `rules.md` and in `csse2310-style-guide.pdf`.
 
 ### NAMING
-- variables
-- defines
-- functions
-- typedefs
+
+Potential error messages:
+- File naming error: _filename_
+- Variable naming error: _name_
+- #define naming error: _name_
+- Function naming error: _name_
+- Type naming error: _name_
 
 ### BRACES
+
+Potential error messages:
+- (TODO)
+
+Categories:
 - space before brace
 - correct placement
 - correct alignment
 
 ### INDENTATION
+
+Potential error messages:
+- (TODO)
+
+Categories:
 - multiples of four spaces
 - nesting correctly indented
 - line continuation
 
 ### WHITESPACE
-- grammatical spacing around assignment operators
-- correctly spaced vertically
+
+Potential error messages:
+- No space around _operator_
+- No space after ,
+- No space after ;
+- No vertical space between functions
+
+(_operator_ will be one of `=`, `+=`, `&=`, etc.)
+
+Further categories:
+- Appropriate vertical whitespace
 
 ### COMMENTS
+
+Potential error messages:
+(none automatically generated)
+
+Categories:
 - globals
 - functions (parameters esp.)
 - lengthy or tricky code
 
 ### OVERALL
-- no function over 50 lines
+
+Potential error messages:
+- Function _name_ is _n_ lines
+- Use of goto
+
+Further categories:
 - modularity / no excessive duplication of code
 
 ### LINE-LENGTH
-- all lines must be shorter than 80 chars long (including \r)
+
+Potential error messages:
+- Line is _n_ characters
 
 ## Usage
 
 ```
-./simpatico.py file1.c file2.c
+./simpatico.py file1.c [file2.c ...]
 ```
