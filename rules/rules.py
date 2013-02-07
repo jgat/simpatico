@@ -30,7 +30,7 @@ class NamesChecker(RuleChecker):
         if (not basename[0].islower() or
                 '_' in basename or
                 not basename.endswith(('.c', '.h'))):
-            self._error((reader.filename, 1), "Invalid filename: " + basename)
+            self._error((reader.filename, 1), "File naming error: " + basename)
 
         while not reader.end():
             token = reader.next_tok()
@@ -39,7 +39,7 @@ class NamesChecker(RuleChecker):
 
             if not self._check_variable(token.value):
                 self._error(reader.file_line(),
-                            "Invalid variable: " + token.value)
+                            "Variable naming error: " + token.value)
 
 
 class BracesChecker(RuleChecker):
@@ -139,7 +139,7 @@ class OverallChecker(RuleChecker):
         while not reader.end():
             token = reader.next_tok()
             if token.type == 'goto':
-                self._error(reader.file_line(), 'goto')
+                self._error(reader.file_line(), "Use of goto")
 
 
 _CHECKERS = [NamesChecker, BracesChecker, IndentationChecker,
